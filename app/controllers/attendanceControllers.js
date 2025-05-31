@@ -1,0 +1,68 @@
+import { validationResult } from 'express-validator';
+import { Attendance } from '../services/attendanceService.js';
+
+export const CreateAttendanceController = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const { user_id } = req.user
+    const { img_url } = req.body
+
+    console.log(req.user)
+
+    try {
+        const createdAttendance = await Attendance.createAttendance(user_id, new Date(), img_url);
+        return res.status(201).json({ message: 'Attendance created successfully', data: createdAttendance });
+    } catch (error) {
+        console.error('Create attendance error:', error.message);
+        return res.status(400).json({ error: error.message, data: null});
+    }
+}
+
+export const GetUserAttendances = async (req, res) => {
+    const { role, user_id } = req.user;
+    if (role !== 'user') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const { limit, page } = req.body;
+    const offset = (page - 1) * limit;
+
+    try {
+        const getAttendance = await Attendance.getUserAttendance(user_id, limit, offset)
+        return res.status(201).json({ message: "Get user's attendances successfully", data: getAttendance });
+    } catch (error) {
+        console.error("Get user's attendances error:", error.message);
+        return res.status(400).json({ error: error.message, data: null });
+    }
+}
+
+export const GetAllAttendancesController = async (req, res) => {
+    const { role } = req.user;
+    if (role !== 'admin') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const { limit, page } = req.body;
+    const offset = (page - 1) * limit;
+
+    try {
+        const getAllAttendance = await Attendance.getAllAttendance(limit, offset)
+        return res.status(201).json({ message: "Get attendances successfully", data: getAllAttendance });
+    } catch (error) {
+        console.error("Get attendances error:", error.message);
+        return res.status(400).json({ error: error.message, data: null });
+    }
+}
