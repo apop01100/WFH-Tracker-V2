@@ -27,16 +27,20 @@ export const GetUserAttendances = async (req, res) => {
         return res.status(403).json({ errors: 'Unauthorized user'})
     }
 
+    const { limit, page } = req.query;
+
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const { limit, page } = req.body;
-    const offset = (page - 1) * limit;
+    const offset = (pageNumber - 1) * limitNumber;
 
     try {
-        const getAttendance = await Attendance.getUserAttendance(user_id, limit, offset)
+        const getAttendance = await Attendance.getUserAttendance(user_id, limitNumber, offset)
         return res.status(201).json({ message: "Get user's attendances successfully", data: getAttendance });
     } catch (error) {
         console.error("Get user's attendances error:", error.message);
@@ -55,11 +59,15 @@ export const GetAllAttendancesController = async (req, res) => {
         return res.status(422).json({ errors: errors.array() });
     }
 
-    const { limit, page } = req.body;
-    const offset = (page - 1) * limit;
+    const { limit, page } = req.query;
+
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+
+    const offset = (pageNumber - 1) * limitNumber;
 
     try {
-        const getAllAttendance = await Attendance.getAllAttendance(limit, offset)
+        const getAllAttendance = await Attendance.getAllAttendance(limitNumber, offset)
         return res.status(201).json({ message: "Get attendances successfully", data: getAllAttendance });
     } catch (error) {
         console.error("Get attendances error:", error.message);
@@ -72,7 +80,7 @@ export const CreateAttendanceController = async (req, res) => {
     if (role !== 'admin') {
         return res.status(403).json({ errors: 'Unauthorized user'})
     }
-    
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
