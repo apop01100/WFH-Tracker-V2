@@ -1,7 +1,7 @@
 import { validationResult } from 'express-validator';
 import { Attendance } from '../services/attendanceService.js';
 
-export const CreateAttendanceController = async (req, res) => {
+export const MarkAttendanceController = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -10,13 +10,13 @@ export const CreateAttendanceController = async (req, res) => {
     const { user_id } = req.user
     const { img_url } = req.body
 
-    console.log(req.user)
+    const dateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
 
     try {
-        const createdAttendance = await Attendance.createAttendance(user_id, new Date(), img_url);
-        return res.status(201).json({ message: 'Attendance created successfully', data: createdAttendance });
+        const markedAttendance = await Attendance.markAttendance(user_id, dateTime, img_url);
+        return res.status(201).json({ message: 'Attendance marked successfully', data: markedAttendance });
     } catch (error) {
-        console.error('Create attendance error:', error.message);
+        console.error('Mark attendance error:', error.message);
         return res.status(400).json({ error: error.message, data: null});
     }
 }
@@ -64,5 +64,27 @@ export const GetAllAttendancesController = async (req, res) => {
     } catch (error) {
         console.error("Get attendances error:", error.message);
         return res.status(400).json({ error: error.message, data: null });
+    }
+}
+
+export const CreateAttendanceController = async (req, res) => {
+    const { role, user_id } = req.user
+    if (role !== 'admin') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    const dateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+    try {
+        const createdAttendance = await Attendance.createAttendance(user_id, dateTime);
+        return res.status(201).json({ message: 'Attendance created successfully', data: createdAttendance });
+    } catch (error) {
+        console.error('Create attendance error:', error.message);
+        return res.status(400).json({ error: error.message, data: null});
     }
 }

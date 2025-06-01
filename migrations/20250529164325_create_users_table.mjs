@@ -30,8 +30,10 @@ export const up = async (knex) => {
     await knex.schema.createTable('user_attendance', (table) => {
         table.increments('id').primary();
         table.integer('user_id').unsigned().references('id').inTable('user');
-        table.datetime('attendance_at').notNullable();
-        table.string('img_url').notNullable();
+        table.date('date').notNullable();
+        table.time('time').nullable().defaultTo(null);
+        table.string('img_url').nullable().defaultTo(null);
+        table.string('status').notNullable().defaultTo('absent')
         table.datetime('created_at').notNullable().defaultTo(knex.fn.now());
         table.datetime('updated_at');
     });
