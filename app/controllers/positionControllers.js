@@ -25,11 +25,15 @@ export const GetAllPositions = async (req, res) => {
         return res.status(403).json({ errors: 'Unauthorized user'})
     }
 
-    const { limit, page } = req.body;
-    const offset = (page - 1) * limit;
+    const { limit, page } = req.query;
+
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+
+    const offset = (pageNumber - 1) * limitNumber;
 
     try {
-        const getAllPositions = await Position.getAllPosition(limit, offset);
+        const getAllPositions = await Position.getAllPosition(limitNumber, offset);
         return res.status(201).json({ message: 'Get user successfully', data: getAllPositions });
     } catch (error) {
         console.error('Get user error:', error.message);

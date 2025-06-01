@@ -4,7 +4,6 @@ import { validateCreateUser } from '../middlewares/createUserValidator.js';
 import { validateUserLogin } from '../middlewares/loginUserValidator.js';
 import { validateUpdateUserForUser } from '../middlewares/updateUserValidator.js';
 import { authenticate } from '../middlewares/auth.js';
-import { validateGetLimitAndPage } from '../middlewares/getUserAttendances.js';
 import { GetUserAttendances } from '../controllers/attendanceControllers.js';
 
 const userRouter = express.Router();
@@ -13,6 +12,6 @@ userRouter.post('/users', validateCreateUser, CreateUserController);
 userRouter.post('/users/login', validateUserLogin, LoginUserController);
 userRouter.put('/users', authenticate, validateUpdateUserForUser, UpdateUserForUserController);
 userRouter.get('/users/profile', authenticate, GetUserPofile);
-userRouter.get('/users/attendances', authenticate, validateGetLimitAndPage, GetUserAttendances);
+userRouter.get('/users/attendances', authenticate, GetUserAttendances);
 
 export default userRouter;
