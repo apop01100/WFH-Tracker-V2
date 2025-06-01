@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import positionRouter from './app/routes/positionRoutes.js';
 import attendanceRouter from './app/routes/attendanceRoutes.js';
 import adminRouter from './app/routes/adminRoutes.js';
+import './app/cron/schedulingCreateAttendance.js';
 dotenv.config();
 
 const app = express();
@@ -25,5 +26,6 @@ app.use('/api/v1', adminRouter);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  const now = new Date().toLocaleString();
+  console.log(`🚀 Server running on port ${PORT} at ${now}`);
 });

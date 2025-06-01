@@ -1,8 +1,11 @@
+import knex from 'knex';
 import db from '../config/db.js';
 
 export const Attendance = {
-    createAttendance: async (userId, attendanceAt, imgUrl) => {
+    markAttendance: async (userId, dateTime, imgUrl) => {
         const trx = await db.transaction();
+
+        const [date, time] = dateTime.split(' ');
 
         try {
             const getUser = await trx('user').select('id', 'username', 'password').where('id', userId).first()
@@ -11,25 +14,22 @@ export const Attendance = {
                 throw new Error("User doesn't exists");
             }
 
-            const existingAttendance = await trx('user_attendance')
-                .where('user_id', userId)
-                .andWhereRaw('DATE(attendance_at) = DATE(?)', [attendanceAt])
-                .first();
-
-            if (existingAttendance) {
-                throw new Error('Attendance for today already exists');
-            }
-
-            const [insertedId] = await trx('user_attendance').insert({
-                user_id: userId,
-                attendance_at: attendanceAt,
-                img_url: imgUrl
-            });
+            const updatedId = await trx('user_attendance')
+                .where({
+                    user_id: userId,
+                    date: date,
+                })
+                .update({
+                    status: 'present',
+                    img_url: imgUrl,
+                    time: time,
+                    updated_at: dateTime,
+                });
 
             await trx.commit();
 
-            const createdAttendance = await db('user_attendance').where('id', insertedId).first();
-            return createdAttendance;
+            const markedAttendance = await db('user_attendance').where('id', updatedId).first();
+            return markedAttendance;
         } catch (error) {
             await trx.rollback();
             console.error('Manual transaction rollback:', error);
@@ -53,7 +53,8 @@ export const Attendance = {
             return db('user_attendance').leftJoin('user', 'user_attendance.user_id', 'user.id')
             .select(
                 'user_attendance.id as attendance_id',
-                'user_attendance.attendance_at',
+                'user_attendance.date',
+                'user_attendance.time',
                 'user_attendance.img_url',
                 'user.id as user_id',
                 'user.first_name',
@@ -79,7 +80,7 @@ export const Attendance = {
                 throw new Error("User doesn't exists");
             }
 
-            const deletedAttendance = await trx('user_attendance').where('user_id', userId).whereRaw('DATE(attendance_at) = ?', [date]).del();
+            const deletedAttendance = await trx('user_attendance').where('user_id', userId, 'date', date).del();
 
             await trx.commit();
 
@@ -88,6 +89,39 @@ export const Attendance = {
             console.error('Failed to delete attendance:', error);
             throw error;
             return null;
+        }
+    },
+
+    createAttendance: async (userId, dateTime) => {
+        const trx = await db.transaction();
+
+        const [date] = dateTime.split(' ');
+
+        try {
+            const existingAttendance = await trx('user_attendance')
+                .where({
+                    date: date,
+                })
+                .first();
+
+            if (existingAttendance) {
+                throw new Error('Attendance for today already exists');
+            }
+
+            const [insertedId] = await trx('user_attendance').insert({
+                user_id: userId,
+                date: date,
+            });
+
+            await trx.commit();
+
+            const createdAttendance = await db('user_attendance').where('id', insertedId).first();
+            return createdAttendance;
+        } catch (error) {
+            await trx.rollback();
+            console.error('Manual transaction rollback:', error);
+            throw error;
+            return null
         }
     },
 }
