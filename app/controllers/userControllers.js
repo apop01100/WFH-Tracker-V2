@@ -104,7 +104,7 @@ export const UpdateUserForUserController = async (req, res) => {
     }
 }
 
-export const GetUserPofile = async (req, res) => {
+export const GetUserPofileController = async (req, res) => {
     const { role, user_id } = req.user
     if (role !== 'user') {
         return res.status(403).json({ errors: 'Unauthorized user'})
