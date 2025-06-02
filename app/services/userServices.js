@@ -55,7 +55,17 @@ export const User = {
 
     getAllUser: async (limit, offset) => {
         try {
-            return db('user').select('id', 'first_name', 'last_name', 'username', 'email', 'position').limit(limit).offset(offset);
+            return db('user').leftJoin('positions', 'user.position_id', 'positions.id')
+                .select(
+                    'user.id',
+                    'user.first_name',
+                    'user.last_name',
+                    'user.username',
+                    'user.email',
+                    'positions.position as position',
+                )
+                .limit(limit)
+                .offset(offset);
         }
         catch (error) {
             console.error('Error fetching users:', error);
