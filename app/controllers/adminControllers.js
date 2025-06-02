@@ -129,3 +129,18 @@ export const DeleteUserForAdminController = async (req, res) => {
         return res.status(400).json({ error: error.message, data: null });
     }
 }
+
+export const GetAdminProfile = async (req, res) => {
+    const { role, user_id } = req.user
+    if (role !== 'admin') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+
+    try {
+        const getAdmin = await Admin.getAdminrById(user_id)
+        return res.status(201).json({ message: 'Get admin successfully', data: adminResponse(getAdmin) });
+    } catch (error) {
+        console.error('Get admin error:', error.message);
+        return res.status(400).json({ error: error.message, data: null });
+    }
+}
