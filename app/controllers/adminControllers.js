@@ -69,7 +69,7 @@ export const LoginAdminController = async (req, res) => {
             maxAge: 60 * 60 * 1000
         })
 
-        return res.status(200).json({ message: 'Login successful' });
+        return res.status(200).json({ message: 'Login successful', data: adminResponse(getAdmin) });
     } catch (error) {
     console.error('Login error: ', error.message);
     return res.status(400).json({ message: error.message });
