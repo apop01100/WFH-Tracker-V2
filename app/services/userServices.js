@@ -50,12 +50,21 @@ export const User = {
     },
 
     getUserById: async (userId) => {
-        return db('user').select('id', 'first_name', 'last_name', 'username', 'email', 'position').where('id', userId).first()
+        return db('user').leftJoin('positions', 'user.position', 'positions.id')
+                .select(
+                    'user.id',
+                    'user.first_name',
+                    'user.last_name',
+                    'user.username',
+                    'user.email',
+                    'positions.position as position',
+                )
+                .where('id', userId).first()
     },
 
     getAllUser: async (limit, offset) => {
         try {
-            return db('user').leftJoin('positions', 'user.position_id', 'positions.id')
+            return db('user').leftJoin('positions', 'user.position', 'positions.id')
                 .select(
                     'user.id',
                     'user.first_name',
