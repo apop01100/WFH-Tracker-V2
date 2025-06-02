@@ -14,6 +14,29 @@ export const Attendance = {
                 throw new Error("User doesn't exists");
             }
 
+            const existingAttendance = await trx('user_attendance')
+                .where({
+                    userId: userId,
+                    date: date,
+                })
+                .first();
+
+            if (!existingAttendance) {
+                throw new Error("Attendance doesn't exist");
+            }
+
+            const absentAttendance = await trx('user_attendance')
+                .where({
+                    user_id: userId,
+                    date: date,
+                    status: 'present',
+                })
+                .first();
+
+            if (absentAttendance) {
+                throw new Error('You already present');
+            }
+
             const updatedId = await trx('user_attendance')
                 .where({
                     user_id: userId,
