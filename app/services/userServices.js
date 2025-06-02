@@ -59,7 +59,7 @@ export const User = {
                     'user.email',
                     'positions.position as position',
                 )
-                .where('id', userId).first()
+                .where('user.id', userId).first()
     },
 
     getAllUser: async (limit, offset) => {
