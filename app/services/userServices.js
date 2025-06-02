@@ -42,7 +42,7 @@ export const User = {
     },
 
     getUserByUsername: async (username) => {
-        return db('user').select('first_name', 'last_name', 'username', 'email', 'position').where('username', username).first()
+        return db('user').select('id', 'first_name', 'last_name', 'username', 'email', 'position').where('username', username).first()
     },
 
     getUserForLogin: async (username) => {
@@ -50,12 +50,12 @@ export const User = {
     },
 
     getUserById: async (userId) => {
-        return db('user').select('first_name', 'last_name', 'username', 'email', 'position').where('id', userId).first()
+        return db('user').select('id', 'first_name', 'last_name', 'username', 'email', 'position').where('id', userId).first()
     },
 
     getAllUser: async (limit, offset) => {
         try {
-            return db('user').select('first_name', 'last_name', 'username', 'email', 'position').limit(limit).offset(offset);
+            return db('user').select('id', 'first_name', 'last_name', 'username', 'email', 'position').limit(limit).offset(offset);
         }
         catch (error) {
             console.error('Error fetching users:', error);
