@@ -78,6 +78,7 @@ export const Attendance = {
                 'user_attendance.id as attendance_id',
                 'user_attendance.date',
                 'user_attendance.time',
+                'user_attendance.status',
                 'user_attendance.img_url',
                 'user.id as user_id',
                 'user.first_name',
