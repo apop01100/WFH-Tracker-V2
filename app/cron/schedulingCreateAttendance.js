@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import db from '../config/db.js';
 
-cron.schedule('31 18 * * *', async () => {
+cron.schedule('0 7 * * *', async () => {
   const today = new Date().toISOString().split('T')[0];
 
   try {
