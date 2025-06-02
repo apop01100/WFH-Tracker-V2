@@ -1,5 +1,5 @@
 import express from 'express';
-import { CreateAdminController, GetAdminProfile, GetAdminProfileController, LoginAdminController, UpdateUserForAdminController } from '../controllers/adminControllers.js';
+import { CreateAdminController, GetAdminProfileController, LoginAdminController, UpdateUserForAdminController } from '../controllers/adminControllers.js';
 import { validateAdmin } from '../middlewares/adminValidator.js';
 import { authenticate } from '../middlewares/auth.js';
 import { validateUpdateUserForAdmin } from '../middlewares/updateUserValidator.js';
