@@ -63,7 +63,11 @@ export const Attendance = {
 
     getUserAttendance: async (userId, limit, offset) => {
         try {
-            return db('user_attendance').select('*').where('user_id', userId).limit(limit).offset(offset);
+            return db('user_attendance')
+                .select('*')
+                .where('user_id', userId)
+                .orderBy([{ column: 'date', order: 'desc' }, { column: 'time', order: 'desc' }])
+                .limit(limit).offset(offset);
         }
         catch (error) {
             console.error('Error fetching attendances:', error);
@@ -85,6 +89,7 @@ export const Attendance = {
                 'user.last_name',
                 'user.username',
             )
+            .orderBy([{ column: 'date', order: 'desc' }, { column: 'time', order: 'desc' }])
             .limit(limit)
             .offset(offset);
         }
