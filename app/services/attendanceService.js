@@ -16,7 +16,7 @@ export const Attendance = {
 
             const existingAttendance = await trx('user_attendance')
                 .where({
-                    userId: userId,
+                    user_id: userId,
                     date: date,
                 })
                 .first();

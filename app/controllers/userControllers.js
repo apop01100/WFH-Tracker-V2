@@ -140,3 +140,28 @@ export const DeleteAttendanceController = async (req, res) => {
         return res.status(400).json({ error: error.message, data: null });
     }
 }
+
+export const GetMeController = async (req, res) => {
+    const { role, user_id } = req.user
+    if (role !== 'user' && role !== 'admin') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+
+    try {
+        const getUser = await User.me(user_id, role)
+        return res.status(201).json({ message: 'Get me successfully', data: userResponse(getUser) });
+    } catch (error) {
+        console.error('Get me error:', error.message);
+        return res.status(400).json({ error: error.message, data: null });
+    }
+}
+
+export const LogoutController = async (req, res) => {
+    const { role } = req.user
+    if (role !== 'user' && role !== 'admin') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+
+    res.clearCookie('token');
+    res.json({ message: 'Logged out' });
+}

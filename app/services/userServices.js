@@ -106,7 +106,7 @@ export const User = {
         const trx = await db.transaction();
 
         try {
-            const getUser = await trx('user').select('id').where('username', username).first()
+            const getUser = await trx('user').select('id').where('username', username).first();
 
             if (!getUser) {
                 throw new Error("User doesn't exists");
@@ -120,6 +120,15 @@ export const User = {
             console.error('Failed to delete user:', error);
             throw error;
             return null;
+        }
+    },
+
+    me: async (id, role) => {
+        try {
+            return db(role).select('id', 'username').where({ id: id }).first();
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            throw new Error('Failed to retrieve users');
         }
     }
 }
