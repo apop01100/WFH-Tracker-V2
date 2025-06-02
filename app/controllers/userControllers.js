@@ -133,8 +133,8 @@ export const GetAllUser = async (req, res) => {
     const offset = (pageNumber - 1) * limitNumber;
 
     try {
-        const getUser = await User.getAllUser(limitNumber, offset)
-        return res.status(201).json({ message: 'Get users successfully', data: userResponse(getUser) });
+        const getUsers = await User.getAllUser(limitNumber, offset)
+        return res.status(201).json({ message: 'Get users successfully', data: getUsers });
     } catch (error) {
         console.error('Get users error:', error.message);
         return res.status(400).json({ error: error.message, data: null });
