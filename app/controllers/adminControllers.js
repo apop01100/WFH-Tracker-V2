@@ -130,7 +130,7 @@ export const DeleteUserForAdminController = async (req, res) => {
     }
 }
 
-export const GetAdminProfile = async (req, res) => {
+export const GetAdminProfileController = async (req, res) => {
     const { role, user_id } = req.user
     if (role !== 'admin') {
         return res.status(403).json({ errors: 'Unauthorized user'})
