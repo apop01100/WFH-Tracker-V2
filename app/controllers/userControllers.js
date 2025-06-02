@@ -119,6 +119,28 @@ export const GetUserPofile = async (req, res) => {
     }
 }
 
+export const GetAllUser = async (req, res) => {
+    const { role } = req.user
+    if (role !== 'admin') {
+        return res.status(403).json({ errors: 'Unauthorized user'})
+    }
+
+    const { limit, page } = req.query;
+
+    const pageNumber = parseInt(page) || 1;
+    const limitNumber = parseInt(limit) || 10;
+
+    const offset = (pageNumber - 1) * limitNumber;
+
+    try {
+        const getUser = await User.getAllUser(limitNumber, offset)
+        return res.status(201).json({ message: 'Get users successfully', data: userResponse(getUser) });
+    } catch (error) {
+        console.error('Get users error:', error.message);
+        return res.status(400).json({ error: error.message, data: null });
+    }
+}
+
 export const DeleteAttendanceController = async (req, res) => {
     const { role, user_id } = req.user
     if (role !== 'user') {
