@@ -10,6 +10,7 @@ This is the backend API for **WFHTrack**, a Work From Home attendance system. It
 - [**Draw DB**](https://www.drawdb.app/editor?shareId=8037e7bc064ea6a00974b3664a1fd6a9) (Database design)
 - **PASETO Authentication**
 - **CORS** middleware
+- [**Postman**](https://documenter.getpostman.com/view/31842216/2sB2x2JE5V) Docs API
 
 ## 🚀 Features
 
