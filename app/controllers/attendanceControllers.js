@@ -89,7 +89,7 @@ export const CreateAttendanceController = async (req, res) => {
     const dateTime = new Date().toISOString().replace('T', ' ').substring(0, 19);
 
     try {
-        const createdAttendance = await Attendance.createAttendance(user_id, dateTime);
+        const createdAttendance = await Attendance.createAttendance(dateTime);
         return res.status(201).json({ message: 'Attendance created successfully', data: createdAttendance });
     } catch (error) {
         console.error('Create attendance error:', error.message);
