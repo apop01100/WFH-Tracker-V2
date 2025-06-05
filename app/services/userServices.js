@@ -18,12 +18,13 @@ export const User = {
                 email: email,
                 position: getPosition.id,
                 password: password,
-            });
+            })
+            .returning('id');
 
             await trx.commit();
             console.log('User created successfully');
 
-            const createdUser = await db('user').where('id', insertedId).first();
+            const createdUser = await db('user').where('id', insertedId.id).first();
             return createdUser;
         } catch (error) {
             await trx.rollback();

@@ -97,7 +97,7 @@ export const UpdateUserForUserController = async (req, res) => {
         }
 
         const updatedUser = await User.updateUser(getUser.id, req.body)
-        return res.status(201).json({ message: 'User update successfully', data: userResponse(updatedUser) });
+        return res.status(200).json({ message: 'User update successfully', data: userResponse(updatedUser) });
     } catch(error) {
         console.error('Update user error:', error.message);
         return res.status(400).json({ error: error.message, data: null });
@@ -112,7 +112,7 @@ export const GetUserPofileController = async (req, res) => {
 
     try {
         const getUser = await User.getUserById(user_id)
-        return res.status(201).json({ message: 'Get user successfully', data: userResponse(getUser) });
+        return res.status(200).json({ message: 'Get user successfully', data: userResponse(getUser) });
     } catch (error) {
         console.error('Get user error:', error.message);
         return res.status(400).json({ error: error.message, data: null });
@@ -134,31 +134,9 @@ export const GetAllUser = async (req, res) => {
 
     try {
         const getUsers = await User.getAllUser(limitNumber, offset)
-        return res.status(201).json({ message: 'Get users successfully', data: getUsers });
+        return res.status(200).json({ message: 'Get users successfully', data: getUsers });
     } catch (error) {
         console.error('Get users error:', error.message);
-        return res.status(400).json({ error: error.message, data: null });
-    }
-}
-
-export const DeleteAttendanceController = async (req, res) => {
-    const { role, user_id } = req.user
-    if (role !== 'user') {
-        return res.status(403).json({ errors: 'Unauthorized user'})
-    }
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-    }
-
-    const { attendance_at } = req.body;
-
-    try {
-        const deletedAttendance = await Attendance.deleteAttendanceByUser(user_id, attendance_at);
-        return res.status(201).json({ message: 'Attendance delete successfully', data: deletedAttendance });
-    } catch (error) {
-        console.error('Delete Attendance error:', error.message);
         return res.status(400).json({ error: error.message, data: null });
     }
 }
@@ -171,7 +149,7 @@ export const GetMeController = async (req, res) => {
 
     try {
         const getUser = await User.me(user_id, role)
-        return res.status(201).json({ message: 'Get me successfully', data: userResponse(getUser) });
+        return res.status(200).json({ message: 'Get me successfully', data: userResponse(getUser) });
     } catch (error) {
         console.error('Get me error:', error.message);
         return res.status(400).json({ error: error.message, data: null });

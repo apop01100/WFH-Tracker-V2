@@ -57,4 +57,3 @@ export const down = async (knex) => {
     await knex.schema.dropTableIfExists('user');
     await knex.schema.dropTableIfExists('positions');
 };
-

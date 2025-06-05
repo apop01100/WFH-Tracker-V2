@@ -8,12 +8,12 @@ export const Admin = {
             const [insertedId] = await trx('admin').insert({
                 username: username,
                 password: password,
-            });
+            }).returning('id');
 
             await trx.commit();
             console.log('Admin created successfully');
 
-            const createdAdmin = await db('admin').where('id', insertedId).first();
+            const createdAdmin = await db('admin').where('id', insertedId.id).first();
             return createdAdmin;
         } catch (error) {
             await trx.rollback();

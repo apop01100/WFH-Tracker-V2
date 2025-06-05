@@ -1,9 +1,8 @@
 import express from 'express';
-import { CreateAttendanceController, GetAllAttendancesController, MarkAttendanceController } from '../controllers/attendanceControllers.js';
+import { CreateAttendanceController, DeleteAttendanceController, GetAllAttendancesController, MarkAttendanceController } from '../controllers/attendanceControllers.js';
 import { validateCreateAttendance } from '../middlewares/createAttendanceValidator.js';
 import { authenticate } from '../middlewares/auth.js';
 import { validateDeleteAttendance } from '../middlewares/deleteAttendanceValidator.js';
-import { DeleteAttendanceController } from '../controllers/userControllers.js';
 
 const attendanceRouter = express.Router();
 

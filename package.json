@@ -21,10 +21,12 @@
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "knex": "^3.1.0",
-    "mysql2": "^3.14.1",
+    "moment-timezone": "^0.6.0",
     "node-cron": "^4.1.0",
     "paseto": "^3.1.4",
-    "paseto-ts": "^2.0.5"
+    "paseto-ts": "^2.0.5",
+    "pg": "^8.16.0",
+    "postgres": "^3.4.7"
   },
   "devDependencies": {
     "knex-cli": "^1.0.2",

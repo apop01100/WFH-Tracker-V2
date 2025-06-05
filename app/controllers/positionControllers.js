@@ -34,7 +34,7 @@ export const GetAllPositions = async (req, res) => {
 
     try {
         const getAllPositions = await Position.getAllPosition(limitNumber, offset);
-        return res.status(201).json({ message: 'Get user successfully', data: getAllPositions });
+        return res.status(200).json({ message: 'Get user successfully', data: getAllPositions });
     } catch (error) {
         console.error('Get user error:', error.message);
         return res.status(400).json({ error: error.message, data: null });

@@ -96,7 +96,7 @@ export const UpdateUserForAdminController = async (req, res) => {
         }
 
         const updatedUser = await User.updateUser(getUser.id, update_user)
-        return res.status(201).json({ message: 'User update successfully', data: userResponse(updatedUser) });
+        return res.status(200).json({ message: 'User update successfully', data: userResponse(updatedUser) });
     } catch(error) {
         console.error('Update user error:', error.message);
         return res.status(400).json({ error: error.message, data: null });
@@ -123,7 +123,7 @@ export const DeleteUserForAdminController = async (req, res) => {
         }
 
         const deletedUser = await User.deleteUser(username);
-        return res.status(201).json({ message: 'User delete successfully', data: deletedUser });
+        return res.status(200).json({ message: 'User delete successfully', data: deletedUser });
     } catch (error) {
         console.error('Delete user error:', error.message);
         return res.status(400).json({ error: error.message, data: null });
@@ -138,7 +138,7 @@ export const GetAdminProfileController = async (req, res) => {
 
     try {
         const getAdmin = await Admin.getAdminrById(user_id)
-        return res.status(201).json({ message: 'Get admin successfully', data: adminResponse(getAdmin) });
+        return res.status(200).json({ message: 'Get admin successfully', data: adminResponse(getAdmin) });
     } catch (error) {
         console.error('Get admin error:', error.message);
         return res.status(400).json({ error: error.message, data: null });

@@ -7,11 +7,12 @@ export const Position = {
         try {
             const [insertedId] = await trx('positions').insert({
                 position: position
-            });
+            })
+            .returning('id');
 
             await trx.commit();
 
-            const createdPosition = await db('positions').where('id', insertedId).first();
+            const createdPosition = await db('positions').where('id', insertedId.id).first();
             return createdPosition;
         } catch (error) {
             await trx.rollback();
