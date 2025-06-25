@@ -1,14 +1,7 @@
 import cron from 'node-cron';
-import moment from 'moment-timezone';
 import db from '../config/db.js';
 
-cron.schedule('* * * * *', async () => {
-  const nowWIB = moment().tz('Asia/Jakarta'); // WIB is Asia/Jakarta
-  const currentTime = nowWIB.format('HH:mm');
-
-  if (currentTime === '07:00') {
-    const today = nowWIB.format('YYYY-MM-DD');
-
+cron.schedule('0 20 * * 1-5', async () => {
     try {
       const users = await db('user').select('id');
 
@@ -33,4 +26,4 @@ cron.schedule('* * * * *', async () => {
       console.error('Error during attendance cron job:', error);
     }
   }
-});
+);

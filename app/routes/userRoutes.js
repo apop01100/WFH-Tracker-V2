@@ -16,6 +16,6 @@ userRouter.get('/users', authenticate, GetAllUser);
 userRouter.get('/users/attendances', authenticate, GetUserAttendances);
 
 userRouter.get('/me', authenticate, GetMeController);
-userRouter.get('/logout', authenticate, LogoutController);
+userRouter.post('/logout', authenticate, LogoutController);
 
 export default userRouter;

@@ -120,6 +120,16 @@ export const Attendance = {
         const [date] = dateTime.split(' ');
 
         try {
+            const existingAttendance = await trx('user_attendance')
+                .where({
+                    date: date,
+                })
+                .first();
+
+            if (existingAttendance) {
+                throw new Error("Attendance already exist");
+            }
+
             const users = await trx('user').select('id');
 
             const insertedAttendance = [];
