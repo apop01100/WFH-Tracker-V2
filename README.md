@@ -6,7 +6,7 @@ This is the backend API for **WFHTrack**, a Work From Home attendance system. It
 
 - **Node.js** + **Express.js**
 - **Knex.js** (SQL query builder)
-- **MySQL** (Database)
+- **PostgreSQL** (Database)
 - [**Draw DB**](https://www.drawdb.app/editor?shareId=8037e7bc064ea6a00974b3664a1fd6a9) (Database design)
 - **PASETO Authentication**
 - **CORS** middleware
